@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Добавление дела</title>
+</head>
+<body>
+    <div>
+        <h3>Форма добавления дела</h3>
+        <form method="post" action="">
+            <table>
+                <tr>
+                    <td><p>Введите дату</p></td>
+                    <td><input type="date" name="DoingDate" /> </td>
+                </tr>
+                <tr>
+                    <td><p>Введите описание дела :</p></td>
+                    <td>
+                        <input type="text" name="DoingString" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><p>Дело выполнено?</p></td>
+                    <td><input type="checkbox" name="isDoingDone" /> </td>
+                </tr>
+                <tr>
+                <tr><td><input type="submit" value="Добавить" /> </td><td></td></tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

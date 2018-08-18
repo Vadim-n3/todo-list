@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Планировщик дел</title>
+</head>
+<body>
+    <div>
+        <h3>Список дел</h3>
+        <table>
+            <tr>
+                <td><p>Дата</p></td>
+                <td><p>Дело</p></td>
+                <td><p>Выполнено</p></td>
+                <td></td>
+            </tr>
+            @foreach (var b in ViewBag.Doings)
+            {
+                <tr>
+                    <td><p>@b.DoingDate.ToShortDateString()</p></td>
+                    <td><p>@b.DoingString</p></td>
+                    <td><p>@b.isDoingDone</p></td>
+                    <td><p>
+                        <a href="/Home/Edit/@b.Id">Изменить</a>
+                        <a href="/Home/Delete/@b.Id">Удалить</a>
+                        </p>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div>
+        <p>
+            <a href="/Home/AddDoing">Добавить</a>
+        </p>
+    </div>
+</body>
+</html>
