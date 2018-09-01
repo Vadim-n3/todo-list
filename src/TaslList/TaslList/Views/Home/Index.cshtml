@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Планировщик задач</title>
+</head>
+<body>
+    <div>
+        <h3>Список задач</h3>
+        <table>
+            <tr>
+                <td><p>Дата</p></td>
+                <td><p>Задача</p></td>
+                <td><p>Выполнено</p></td>
+                <td></td>
+            </tr>
+            @foreach (var b in ViewBag.Tasks)
+            {
+                <tr>
+                    <td><p>@b.TaskDate.ToShortDateString()</p></td>
+                    <td><p>@b.TaskString</p></td>
+                    <td><p>@b.IsTaskDone</p></td>
+                    <td>
+                        <p>
+                            <a href="/Home/EditTask/@b.Id">Изменить</a>
+                            <a href="/Home/DeleteTask/@b.Id">Удалить</a>
+                        </p>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div>
+        <p>
+            <a href="/Home/AddTask">Добавить</a>
+        </p>
+    </div>
+</body>
+</html>
