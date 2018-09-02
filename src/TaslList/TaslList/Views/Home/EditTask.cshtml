@@ -1,28 +1,27 @@
-﻿@{
-    ViewBag.Title = "Editask";
+﻿@using TaslList.Models;
+@model Task
+
+
+@{
+
+    ViewBag.Title = "Редактирование задачи";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Редактирование задачи</title>
-</head>
-<body>
+
     <div>
         <h3>Форма редактирования задачи</h3>
         <form method="post" action="">
-            <input type="hidden" value="@ViewBag.task.Id" name="Id" />
+            <input type="hidden" value="@Model.Id" name="Id" />
             <table>
                 <tr>
                     <td><p>Введите дату</p></td>
-                    <td><input type="date" name="TaskDate" value="@ViewBag.task.TaskDate.ToString("yyyy-MM-dd")" /> </td>
+                    <td><input type="date" name="TaskDate" value="@Model.TaskDate.ToString("yyyy-MM-dd")" /> </td>
                 </tr>
                 <tr>
                     <td><p>Введите описание задачи :</p></td>
                     <td>
-                        <input type="text" name="TaskString" value="@ViewBag.task.TaskString" />
+                        <input type="text" name="TaskString" value="@Model.TaskString" />
                     </td>
                 </tr>
                 <tr>
@@ -31,16 +30,13 @@
                 </tr>
                 <tr>
                 <tr><td><input type="submit" value="Изменить" /> </td><td></td></tr>
-
-                @if (TempData["Error"] != null)
-                {
-                    <div class="alert alert-danger">
-                        <strong>Ошибка!</strong> @TempData["Error"]
-                    </div>
-                }
-
             </table>
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">
+                    <strong>Ошибка!</strong> @TempData["Error"]
+                </div>
+            }
         </form>
     </div>
-</body>
-</html>
+

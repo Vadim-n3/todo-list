@@ -1,44 +1,62 @@
-﻿@{
+﻿@using TaslList.Models;
+@model IEnumerable<Task>
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Планировщик задач";
+    var dateRowClass = "row-coming";
+    var doneRowClass = "row-done";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Планировщик задач</title>
-</head>
-<body>
-    <div>
-        <h3>Список задач</h3>
-        <table>
-            <tr>
-                <td><p>Дата</p></td>
-                <td><p>Задача</p></td>
-                <td><p>Выполнено</p></td>
-                <td></td>
-            </tr>
-            @foreach (var b in ViewBag.Tasks)
+<div>
+    <h3>Список задач</h3>
+    <table class="table-task">
+        <tr>
+            <td><p>Дата</p></td>
+            <td><p>Задача</p></td>
+            <td><p>Выполнено</p></td>
+            <td></td>
+        </tr>
+        @foreach (var b in Model)
+        {
+            if (b.IsTaskDone)
             {
-                <tr>
-                    <td><p>@b.TaskDate.ToShortDateString()</p></td>
-                    <td><p>@b.TaskString</p></td>
-                    <td><p>@b.IsTaskDone</p></td>
-                    <td>
-                        <p>
-                            <a href="/Home/EditTask/@b.Id">Изменить</a>
-                            <a href="/Home/DeleteTask/@b.Id">Удалить</a>
-                        </p>
-                    </td>
-                </tr>
+                doneRowClass = "row-done";
             }
-        </table>
-    </div>
-    <div>
-        <p>
-            <a href="/Home/AddTask">Добавить</a>
-        </p>
-    </div>
-</body>
-</html>
+            else
+            {
+                doneRowClass = "row-not-done";
+            }
+
+            var dateDif = b.TaskDate.Date - DateTime.Now.Date;
+            if (dateDif < TimeSpan.Zero)
+            {
+                dateRowClass = "row-outdated";
+            }
+            else if (dateDif == TimeSpan.Zero)
+            {
+                dateRowClass = "row-topical";
+            }
+            else
+            {
+                dateRowClass = "row-coming";
+            }
+            <tr>
+                <td class="@dateRowClass"><p>@b.TaskDate.ToShortDateString()</p></td>
+                <td><p>@b.TaskString</p></td>
+                <td class="@doneRowClass"><p>@b.IsTaskDone</p></td>
+                <td>
+                    <p>
+                        @Html.ActionLink("Изменить", "EditTask", "Home", new { Id = b.Id }, null)
+                        @Html.ActionLink("Удалить", "DeleteTask", "Home", new { Id = b.Id }, null)
+                    </p>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    <p>
+        <a href="/Home/AddTask">Добавить</a>
+    </p>
+</div>

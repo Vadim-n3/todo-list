@@ -1,15 +1,9 @@
 ﻿@{
-    ViewBag.Title = "AddTask";
+    ViewBag.Title = "Добавление задачи";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Добавление задачи</title>
-</head>
-<body>
+
     <div>
         <h3>Форма добавления задачи</h3>
         <form method="post" action="">
@@ -31,7 +25,12 @@
                 <tr>
                 <tr><td><input type="submit" value="Добавить" /> </td><td></td></tr>
             </table>
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">
+                    <strong>Ошибка!</strong> @TempData["Error"]
+                </div>
+            }
         </form>
     </div>
-</body>
-</html>
+

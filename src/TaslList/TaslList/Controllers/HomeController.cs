@@ -9,14 +9,17 @@ namespace TaslList.Controllers
 {
     public class HomeController : Controller
     {
-        TaskContext db = new TaskContext();
+        //TaskContext db = new TaskContext();
 
         public ActionResult Index()
         {
-            IEnumerable<Task> tasks = db.Tasks;
-            tasks = tasks.OrderBy(t => t.TaskDate);
-            ViewBag.Tasks = tasks;
-            return View();
+            using (TaskContext db = new TaskContext())
+            {
+                IEnumerable<Task> tasks = db.Tasks;
+                tasks = tasks.OrderBy(t => t.TaskDate);
+
+                return View(db.Tasks.ToList().OrderBy(t => t.TaskDate));
+            }
         }
 
         [HttpGet]
@@ -28,53 +31,64 @@ namespace TaslList.Controllers
         [HttpPost]
         public ActionResult AddTask(Task task)
         {
-            if (ModelState.IsValid)
+            using (TaskContext db = new TaskContext())
             {
-                db.Tasks.Add(task);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Tasks.Add(task);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            TempData["Error"] = "Не все поля заполнены.";
             return View();
         }
 
         [HttpGet]
         public ActionResult DeleteTask(int id)
         {
-            db.Tasks.Remove(db.Tasks.Find(id));
-            db.SaveChanges();
+            using (TaskContext db = new TaskContext())
+            {
+                db.Tasks.Remove(db.Tasks.Find(id));
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult EditTask(int id)
         {
-            Task task = db.Tasks.Find(id);
-            
-            if (task == null)
+            using (TaskContext db = new TaskContext())
             {
-                return HttpNotFound();
-            }
+                Task task = db.Tasks.Find(id);
 
-            ViewBag.Task = task;
-            return View();
+                if (task == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(task);
+            }
         }
 
         [HttpPost]
         public ActionResult EditTask(Task task)
         {
-            if (ModelState.IsValid)
+            using (TaskContext db = new TaskContext())
             {
-                Task taskToEdit = db.Tasks.Find(task.Id);
+                if (ModelState.IsValid)
+                {
+                    Task taskToEdit = db.Tasks.Find(task.Id);
 
-                taskToEdit.TaskDate = task.TaskDate;
-                taskToEdit.TaskString = task.TaskString;
-                taskToEdit.IsTaskDone = task.IsTaskDone;
+                    taskToEdit.TaskDate = task.TaskDate;
+                    taskToEdit.TaskString = task.TaskString;
+                    taskToEdit.IsTaskDone = task.IsTaskDone;
 
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             TempData["Error"] = "Не все поля заполнены.";
-            return RedirectToAction("EditTask");
+            return View(task);
 
         }
     }
