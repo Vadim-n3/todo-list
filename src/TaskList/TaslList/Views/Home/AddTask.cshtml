@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Добавление задачи";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div class="mt-max">
+        <h3 >Форма добавления задачи</h3>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="TaskDate">Введите дату:</label>
+                <input type="date" class="form-control" id="TaskDate" name="TaskDate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+            </div>
+            <div class="form-group">
+                <label for="TaskString">Введите описание задачи:</label>
+                <input type="text" class="form-control" id="TaskString" name="TaskString">
+            </div>
+            <div class="form-group">
+                <label for="IsTaskDone">Задача выполнена?</label>
+                <input type="checkbox" class="form-check-input" id="IsTaskDone" name="IsTaskDone" value="true">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-primary" />
+                @Html.ActionLink("Назад", "Index", "Home", new { @class = "btn btn-default" })
+            </div>
+            @if (TempData["Error"] != null)
+            {
+                <div class="form-group">
+                    <div class="alert alert-danger">
+                        <strong>Ошибка!</strong> @TempData["Error"]
+                    </div>
+                </div>
+            }
+
+            @*<table>
+                <tr>
+                    <td><p>Введите дату</p></td>
+                    <td><input type="date" name="TaskDate" /> </td>
+                </tr>
+                <tr>
+                    <td><p>Введите описание задачи :</p></td>
+                    <td>
+                        <input type="text" name="TaskString" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><p>Задача выполнена?</p></td>
+                    <td><input type="checkbox" name="IsTaskDone" value="true" /> </td>
+                </tr>
+                <tr>
+                <tr><td><input type="submit" value="Добавить" /> </td><td></td></tr>
+            </table>
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">
+                    <strong>Ошибка!</strong> @TempData["Error"]
+                </div>
+            }*@
+        </form>
+    </div>
+

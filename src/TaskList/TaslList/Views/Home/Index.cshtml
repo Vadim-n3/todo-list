@@ -1,0 +1,64 @@
+﻿@using TaslList.Models;
+@model IEnumerable<Task>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Планировщик задач";
+    var dateRowClass = "row-coming";
+    var doneRowClass = "row-done";
+}
+
+
+<div>
+    <h3>Список задач</h3>
+    <table class="table-task">
+        <tr>
+            <td><p>Дата</p></td>
+            <td><p>Задача</p></td>
+            <td><p>Выполнено</p></td>
+            <td></td>
+        </tr>
+        @foreach (var b in Model)
+        {
+            if (b.IsTaskDone)
+            {
+                doneRowClass = "row-done";
+            }
+            else
+            {
+                doneRowClass = "row-not-done";
+            }
+
+            var dateDif = b.TaskDate.Date - DateTime.Now.Date;
+            if (dateDif < TimeSpan.Zero)
+            {
+                dateRowClass = "row-outdated";
+            }
+            else if (dateDif == TimeSpan.Zero)
+            {
+                dateRowClass = "row-topical";
+            }
+            else
+            {
+                dateRowClass = "row-coming";
+            }
+            <tr>
+                <td class="@dateRowClass"><p>@b.TaskDate.ToShortDateString()</p></td>
+                <td><p>@b.TaskString</p></td>
+                <td class="@doneRowClass"><p>@(b.IsTaskDone ? "Да" : "Нет")</p></td>
+                <td>
+                        @Html.ActionLink("Изменить", "EditTask", "Home", new { Id = b.Id }, new { @class = "btn btn-success" })
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                            Удалить
+                        </button>
+                    @{Html.RenderPartial("~/Views/Shared/_Modal.cshtml", b.Id);}
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    <p>
+        @Html.ActionLink("Добавить", "AddTask", "Home", null, new { @class = "btn btn-primary mt-2" })
+    </p>
+</div>
